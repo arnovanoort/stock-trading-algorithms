@@ -16,9 +16,9 @@ data class Stock(
     @JsonProperty("currency")
     var currency: String,
     @JsonProperty("dateListedNullable")
-    var dateListedNullable: LocalDate,
+    var dateListedNullable: LocalDate?,
     @JsonProperty("dateUnListedNullable")
-    var dateUnListedNullable: LocalDate,
+    var dateUnListedNullable: LocalDate?,
     @JsonProperty("stockMarketId")
     val stockMarketId: UUID
 

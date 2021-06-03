@@ -1,11 +1,14 @@
 package nl.arnovanoort.tradingalgorithms.implementation
 
 import nl.arnovanoort.tradingalgorithms.MomentumException
+import nl.arnovanoort.tradingalgorithms.controller.AlgorithmController
 import nl.arnovanoort.tradingalgorithms.definition.TradingAlgorithm
 import nl.arnovanoort.tradingalgorithms.domain.*
 import nl.arnovanoort.tradingalgorithms.repository.ExecutionResultRepository
 import nl.arnovanoort.tradingalgorithms.repository.StockMarketRepository
 import nl.arnovanoort.tradingalgorithms.repository.StockRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -25,12 +28,13 @@ class MomentumAlgorithm : TradingAlgorithm {
     @Autowired
     private lateinit var executionResultRepository: ExecutionResultRepository
 
+    var logger: Logger = LoggerFactory.getLogger(MomentumAlgorithm::class.java)
 
     override fun getName():ExecutionAlgorithmName {
         return ExecutionAlgorithmName.MOMENTUM
     }
 
-    override fun execute(stockMarketUuid: UUID, params: HashMap<String, String>) {
+    override fun execute(stockMarketUuid: UUID, params: Map<String, String>) {
 
         // create execution
         val executionAlgorithm : ExecutionAlgorithm = executionResultRepository
@@ -41,24 +45,29 @@ class MomentumAlgorithm : TradingAlgorithm {
         // store it
         val createExecution = CreateExecution.fromParams(executionAlgorithm.id, params)
         val executionId = executionResultRepository.createExecution(createExecution)
+        val ex = executionResultRepository.getExecution(executionId)
+        logger.info("stored execution ${ex}")
 
         // calculate momentum for all stocks of a stockmarket
         stockMarketRepository
             .getStocks(stockMarketUuid)
             .forEach{ stock ->
+                logger.info("getting stockprices for ${stock.ticker}")
                 val stockPrices = stockRepository.getStockPrice(stock.id, createExecution.startDate, createExecution.endDate)
-                val momentum = calculateStockMomentum(stockPrices)
-                val executionResult = CreateExecutionResult(
-                    ExecutionResultName.MOMENTUM,
-                    momentum.toBigDecimal(),
-                    executionId,
-                    stock.id
-                )
-                executionResultRepository.createExecutionResult(executionResult, stock.asExecutionStock())
+                calculateStockMomentum(stockPrices).map { momentum ->
+                     CreateExecutionResult(
+                            ExecutionResultName.MOMENTUM,
+                            momentum.toBigDecimal(),
+                            stock.id,
+                            executionId
+                    )
+                }.map { executionResult ->
+                    executionResultRepository.createExecutionResult(executionResult, stock.asExecutionStock())
+                }
             }
     }
 
-    fun calculateStockMomentum(stockPrices: List<StockPrice>): Float {
+    fun calculateStockMomentum(stockPrices: List<StockPrice>): Float? {
         val filtered: List<Float> = stockPrices
             .sortedByDescending { it.date }
             .take(7 * (stockPrices.size / 7)) // take a meervoud van 7
@@ -70,8 +79,12 @@ class MomentumAlgorithm : TradingAlgorithm {
         return calculateMomentum(difference)
     }
 
-    fun calculateMomentum(differences: List<Float>): Float {
-        return 100 * (differences.reduce{ acc, value -> acc * (value) } - 1)
+    fun calculateMomentum(differences: List<Float>): Float? {
+        if(differences.size > 0){
+            return 100 * (differences.reduce{ acc, value -> acc * (value) } - 1)
+        } else {
+            return null
+        }
     }
 
     fun calculateDifference(prices: List<Float>, previousPeriods: List<Float>): List<Float> {

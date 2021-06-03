@@ -24,12 +24,14 @@ class StockMarketRepository {
     val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     fun getStocks(stockMarketUuid: UUID): List<Stock> {
-        val stockResponse = get(stockDataUrl).jsonArray.toString()
+        val url = stockDataUrl.replace("<uuid>", stockMarketUuid.toString())
+        val stockResponse = get(url).jsonArray.toString()
         return mapper.readValue(stockResponse)
     }
 
     fun get(stockMarketUuid: UUID): StockMarket {
-        val stockMarketResponse: String = get(stockMarketDataUrl).jsonArray.toString()
+        val url = stockMarketDataUrl.replace("<uuid>", stockMarketUuid.toString())
+        val stockMarketResponse: String = get(url).jsonObject.toString()//text//.toString()
         return mapper.readValue(stockMarketResponse)
     }
 }

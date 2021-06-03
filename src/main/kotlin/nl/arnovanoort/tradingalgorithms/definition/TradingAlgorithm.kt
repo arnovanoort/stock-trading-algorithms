@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 interface TradingAlgorithm {
-    fun execute(stockMarketId: UUID, params: HashMap<String, String>)
+    fun execute(stockMarketId: UUID, params: Map<String, String>)
 
     fun getName(): ExecutionAlgorithmName
 }

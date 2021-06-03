@@ -47,7 +47,7 @@ class ExecutionResultRepositoryTest {
     @Test
     fun testCreateExecutionResult() {
         val stockMarketId = UUID.randomUUID()
-        Mockito.`when`(stockMarketRepository.get(stockMarketId)).thenReturn(StockMarket(stockMarketId, "NASDAQ"))
+        Mockito.`when`(stockMarketRepository.get(stockMarketId)).thenReturn(StockMarket(stockMarketId, "NASDAQ", "tiingo"))
         val executionStock: ExecutionStock = ExecutionStock(UUID.randomUUID(), "Amazon", "AMZN", stockMarketId)
         val executionId = executionResultRepository.createExecution(createExecution)
         val momentum = 11.11f.toBigDecimal()

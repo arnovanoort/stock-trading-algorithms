@@ -12,9 +12,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import nl.arnovanoort.tradingalgorithms.domain.StockPrice
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Repository
 class StockRepository {
+
+    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     @Value("\${stockdata.url.stocks}")
     lateinit var getStocksUrl: String;
@@ -28,7 +31,11 @@ class StockRepository {
     }
 
     fun getStockPrice(id: UUID, startDate: LocalDate, endDate: LocalDate): List<StockPrice> {
-        val stockResponse: Response = get(getStockPricesUrl)
+        val url = getStockPricesUrl
+                .replace("<uuid>", id.toString())
+                .replace("{startDate}", startDate.format(dateFormatter))
+                .replace("{endDate}", endDate.format(dateFormatter))
+        val stockResponse: Response = get(url)
         return objectMapper.readValue(stockResponse.jsonArray.toString())
     }
 

@@ -1,0 +1,21 @@
+2021-05-26 11:08:24,343 INFO org.springframework.boot.StartupInfoLogger [main] Starting TradingAlgorithmsApplicationKt using Java 11.0.11 on arno-ThinkPad-P15-Gen-1 with PID 3620518 (/home/arno/data/workspaces/trading-algorithms/target/classes started by arno in /home/arno/data/workspaces/trading-algorithms)
+2021-05-26 11:08:24,345 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-05-26 11:08:24,845 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-05-26 11:08:24,863 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 9 ms. Found 0 JPA repository interfaces.
+2021-05-26 11:08:25,232 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Flyway Community Edition 7.7.3 by Redgate
+2021-05-26 11:08:25,235 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2021-05-26 11:08:25,294 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-05-26 11:08:25,310 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Database: jdbc:postgresql://localhost:5432/tradingalgorithms (PostgreSQL 13.2)
+2021-05-26 11:08:25,338 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Successfully validated 1 migration (execution time 00:00.016s)
+2021-05-26 11:08:25,344 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Current version of schema "public": 1
+2021-05-26 11:08:25,344 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Schema "public" is up to date. No migration necessary.
+2021-05-26 11:08:25,430 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-05-26 11:08:25,459 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.31.Final
+2021-05-26 11:08:25,528 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-05-26 11:08:25,589 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2021-05-26 11:08:25,682 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-05-26 11:08:25,689 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-05-26 11:08:26,094 INFO org.springframework.boot.web.embedded.netty.NettyWebServer [main] Netty started on port 8081
+2021-05-26 11:08:26,104 INFO org.springframework.boot.StartupInfoLogger [main] Started TradingAlgorithmsApplicationKt in 2.085 seconds (JVM running for 2.643)
+2021-05-26 11:08:26,105 INFO org.springframework.boot.availability.ApplicationAvailabilityBean [main] Application availability state LivenessState changed to CORRECT
+2021-05-26 11:08:26,106 INFO org.springframework.boot.availability.ApplicationAvailabilityBean [main] Application availability state ReadinessState changed to ACCEPTING_TRAFFIC

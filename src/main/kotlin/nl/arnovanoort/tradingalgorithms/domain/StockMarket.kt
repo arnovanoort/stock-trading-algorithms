@@ -8,6 +8,8 @@ data class StockMarket (
     val id: UUID,
     @JsonProperty("name")
     val name: String,
+    @JsonProperty("client")
+    val client: String
 ){
     fun asExecutionStockMarket(): ExecutionStockMarket{
         return ExecutionStockMarket(
