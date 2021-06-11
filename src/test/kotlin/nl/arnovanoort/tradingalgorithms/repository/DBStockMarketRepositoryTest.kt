@@ -24,11 +24,11 @@ class DBStockMarketRepositoryTest {
     fun testGetStocks(){
 
         // data
-        val stockMarketUuid = UUID.randomUUID()
+        val stockMarketUuid = UUID.fromString("af5a2e48-a43f-4ac8-8b0c-24d29477d35b")
         val stockUuid = UUID.randomUUID()
         val today = LocalDate.now()
         val stock = Stock(stockUuid, "Tesla", "TLSA", "stock", "EUR", today, LocalDate.now(), stockMarketUuid)
-        val getStocksUrl = "http://replaceWithURL/stockmarket/<uuid>/stocks/"
+        val getStocksUrl = "http://replaceWithURL/stockmarket/af5a2e48-a43f-4ac8-8b0c-24d29477d35b/stocks/"
 
         // prepare
         var responseValue = JSONArray()

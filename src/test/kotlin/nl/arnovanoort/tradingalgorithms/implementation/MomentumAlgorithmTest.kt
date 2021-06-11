@@ -1,11 +1,11 @@
 package nl.arnovanoort.tradingalgorithms.implementation
 
 import nl.arnovanoort.tradingalgorithms.domain.StockPrice
-import nl.arnovanoort.tradingalgorithms.MomentumException
+import nl.arnovanoort.tradingalgorithms.repository.ExecutionResultRepository
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.assertThrows
+import org.mockito.Mock
 import java.time.LocalDate
 import java.util.*
 
@@ -14,20 +14,25 @@ class MomentumAlgorithmTest {
 
     private val momentumAlgorithm = MomentumAlgorithm()
 
-    @Test
-    fun testCallwithoutLookback(){
-        assertThrows<MomentumException>{
-            momentumAlgorithm.execute(UUID.randomUUID(), HashMap())
-        }
-    }
+    @Mock
+    private lateinit var executionResultRepository: ExecutionResultRepository
+
+
+//    @Test
+//    fun testCallwithoutLookback(){
+//    momentumAlgorithm.stockMarketRepository = mockk<StockMarketRepository>(relaxed = true)
+//        assertThrows<MomentumException>{
+//            momentumAlgorithm.execute(UUID.randomUUID(), HashMap())
+//        }
+//    }
     @Test
     fun testDifferenceMore() {
-        assertEquals(listOf(1.5, 0.8888889), momentumAlgorithm.calculateDifference(listOf(50.00f, 100.00f, 90.00f), listOf()))
+        assertEquals(listOf(1.5f, 0.8888889f), momentumAlgorithm.calculateDifference(listOf(50.00f, 100.00f, 90.00f), listOf()))
     }
 
     @Test
     fun testDifferenceLess() {
-        assertEquals(momentumAlgorithm.calculateDifference(listOf(100.00f, 90.00f), listOf()), listOf(90.00f))
+        assertEquals(listOf(0.8888889f), momentumAlgorithm.calculateDifference(listOf(100.00f, 90.00f), listOf()))
     }
 
     @Test
@@ -37,9 +42,6 @@ class MomentumAlgorithmTest {
 
     @Test
     fun testMomentum() {
-        val listt = listOf("123", "45")
-        println(listt.flatMap { it.toList() })
-
         val appleStockUUid = UUID.randomUUID();
         val appleStockPrices1:List<StockPrice> = listOf(
             StockPrice(UUID.randomUUID(), 19.85f, 17.88f,20.01f,17.63f, 8765954400, appleStockUUid, LocalDate.of(2014, 1, 1)),
@@ -55,11 +57,7 @@ class MomentumAlgorithmTest {
             StockPrice(UUID.randomUUID(), 27.06f, 29.73f,29.94f,26.93f, 3281632800, appleStockUUid, LocalDate.of(2014, 3, 12)),
             StockPrice(UUID.randomUUID(), 29.70f, 27.59f,29.81f,26.57f, 4294378400, appleStockUUid, LocalDate.of(2014, 3, 19))
         )
-        val list = listOf("123", "45")
-        println(list.flatMap { it.toList() })
-
         val appleStockPrices:List<StockPrice> = appleStockPrices1.flatMap { stockPrices -> listOf(stockPrices,stockPrices,stockPrices,stockPrices,stockPrices,stockPrices,stockPrices)}
-        val appleStockPrices2:List<StockPrice> = appleStockPrices1.flatMap { stockPrices -> listOf(stockPrices,stockPrices,stockPrices,stockPrices,stockPrices,stockPrices,stockPrices)}
         val momentum = momentumAlgorithm.calculateStockMomentum(appleStockPrices)
         assertEquals(42.709328f, momentum)
     }

@@ -20,7 +20,7 @@ import kotlin.collections.HashMap
 class MomentumAlgorithm : TradingAlgorithm {
 
     @Autowired
-    private lateinit var stockMarketRepository: StockMarketRepository;
+    lateinit var stockMarketRepository: StockMarketRepository;
 
     @Autowired
     private lateinit var stockRepository: StockRepository;
@@ -54,14 +54,14 @@ class MomentumAlgorithm : TradingAlgorithm {
             .forEach{ stock ->
                 logger.info("getting stockprices for ${stock.ticker}")
                 val stockPrices = stockRepository.getStockPrice(stock.id, createExecution.startDate, createExecution.endDate)
-                calculateStockMomentum(stockPrices).map { momentum ->
+                calculateStockMomentum(stockPrices)?.let { momentum ->
                      CreateExecutionResult(
                             ExecutionResultName.MOMENTUM,
                             momentum.toBigDecimal(),
                             stock.id,
                             executionId
                     )
-                }.map { executionResult ->
+                }?.let { executionResult ->
                     executionResultRepository.createExecutionResult(executionResult, stock.asExecutionStock())
                 }
             }

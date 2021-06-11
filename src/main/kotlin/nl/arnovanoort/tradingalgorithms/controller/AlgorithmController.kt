@@ -18,7 +18,7 @@ class AlgorithmController {
     private lateinit var momentumAlgorithm: MomentumAlgorithm
 
     @PostMapping("/algorithms")
-    fun executeAlgorithmTest(@RequestBody request: ExecuteAlgorithmRequest){
+    fun executeAlgorithm(@RequestBody request: ExecuteAlgorithmRequest){
         logger.debug("processing request " + request)
         momentumAlgorithm.execute(request.uuid, request.params)
     }
